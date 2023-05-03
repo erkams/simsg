@@ -257,8 +257,8 @@ class SIMSGModel(nn.Module):
             # output shape: (num_objs, 10, 1024)
             vecs = self.text_encoder(tokens)[0]
 
-            # merge last two dimensions with view, output shape: (num_objs, 10240)
-            vecs = vecs.view(vecs.size(0), -1)
+            # take average of the tokens to get a overall 1-dim embedding for each objects (num_objs, 1024)
+            vecs = vecs.mean(axis=-2)
 
             return vecs
         
@@ -359,8 +359,8 @@ class SIMSGModel(nn.Module):
         # output shape: (num_objs, 10, 1024)
         obj_vecs = self.text_encoder(obj_tokens)[0]
 
-        # merge last two dimensions with view, output shape: (num_objs, 10240)
-        obj_vecs = obj_vecs.view(obj_vecs.size(0), -1)
+        # taking average over token axis to get a overall 1dim vector per object (num_objs, 1024)
+        obj_vecs = obj_vecs.mean(axis=-2)
 
         if obj_to_img is None:
             obj_to_img = torch.zeros(num_objs, dtype=objs.dtype, device=objs.device)
