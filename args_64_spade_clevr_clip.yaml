@@ -4,7 +4,7 @@ gpu: 0
 
 # DATA OPTIONS
 dataset: clevr
-vg_image_dir: /content/drive/MyDrive/MyClevr
+vg_image_dir: /content/drive/MyDrive/MyClevr/target
 output_dir: experiments/clevr_clip
 checkpoint_name: spade_64_clevr_clip
 log_dir: experiments/clevr/logs/spade_64_clevr_clip
