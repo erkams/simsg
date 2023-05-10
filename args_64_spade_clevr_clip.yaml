@@ -5,9 +5,9 @@ gpu: 0
 # DATA OPTIONS
 dataset: clevr
 vg_image_dir: /content/drive/MyDrive/MyClevr/target
-output_dir: experiments/clevr_clip
+output_dir: /content/drive/MyDrive/experiments/clevr_clip
 checkpoint_name: spade_64_clevr_clip
-log_dir: experiments/clevr/logs/spade_64_clevr_clip
+log_dir: /content/drive/MyDrive/experiments/clevr/logs/spade_64_clevr_clip
 
 # ARCHITECTURE OPTIONS
 image_size: !!python/tuple [64, 64]
