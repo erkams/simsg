@@ -87,7 +87,7 @@ class SceneGraphWithPairsDataset(Dataset):
     with h5py.File(h5_path, 'r') as f:
       for k, v in f.items():
         if k == 'image_paths':
-          self.image_paths = list(v.decode())
+          self.image_paths = list(v)
         else:
           self.data[k] = torch.IntTensor(np.asarray(v))
 
@@ -95,7 +95,7 @@ class SceneGraphWithPairsDataset(Dataset):
     with h5py.File(src_h5_path, 'r') as f:
       for k, v in f.items():
         if k == 'image_paths':
-          self.image_paths_src = list(v.decode())
+          self.image_paths_src = list(v)
         else:
           self.data_src[k] = torch.IntTensor(np.asarray(v))
 
@@ -115,8 +115,8 @@ class SceneGraphWithPairsDataset(Dataset):
     - triples: LongTensor of shape (num_triples, 3) where triples[t] = [i, p, j]
       means that (objs[i], p, objs[j]) is a triple.
     """
-    img_path = os.path.join(self.image_dir, self.image_paths[index])
-    img_source_path = os.path.join(self.image_source_dir, self.image_paths[index])
+    img_path = os.path.join(self.image_dir, self.image_paths[index].decode())
+    img_source_path = os.path.join(self.image_source_dir, self.image_paths[index].decode())
 
     src_to_target_obj = conv_src_to_target(self.vocab_src, self.vocab_t)
 
