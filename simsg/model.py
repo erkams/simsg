@@ -351,13 +351,16 @@ class SIMSGModel(nn.Module):
         in_image = src_image.clone()
         num_objs = objs.size(0)
         print(f'objs shape: {objs.shape}')
-        print(f'pred shape: {p.shape}')
+        print(f'triples shape: {triples.shape}')
+        print(f'obj to img: {obj_to_img}')
+
         obj_names = [self.vocab['object_idx_to_name'][i] for i in objs.cpu().numpy()]
         s, p, o = triples.chunk(3, dim=1)  # All have shape (num_triples, 1)
         s, p, o = [x.squeeze(1) for x in [s, p, o]]  # Now have shape (num_triples,)
         edges = torch.stack([s, o], dim=1)  # Shape is (num_triples, 2)
         p_names = [self.vocab['pred_idx_to_name'][i] for i in p.cpu().numpy()]
 
+        print(f'pred shape: {p.shape}')
         # output shape: (num_objs, 10)
         obj_tokens = self.tokenizer(
             obj_names, max_length=10, padding="max_length", truncation=True, return_tensors="pt"
