@@ -45,7 +45,7 @@ class SIMSGModel(nn.Module):
     a manipulated image that satisfies the scene graph constellations
     """
     def __init__(self, vocab, image_size=(64, 64), embedding_dim=1024,
-                 gconv_dim=128, gconv_hidden_dim=512,
+                 gconv_dim=1024, gconv_hidden_dim=512,
                  gconv_pooling='avg', gconv_num_layers=5,
                  decoder_dims=(1024, 512, 256, 128, 64),
                  normalization='batch', activation='leakyrelu-0.2',
@@ -289,7 +289,9 @@ class SIMSGModel(nn.Module):
             obj_vecs = self.layer_norm(obj_vecs)
 
         pred_vecs = embed_text(p_names)
-
+        print(obj_vecs.shape)
+        print(pred_vecs.shape)
+        
         # GCN pass
         if isinstance(self.gconv, nn.Linear):
             obj_vecs = self.gconv(obj_vecs)
@@ -402,14 +404,19 @@ class SIMSGModel(nn.Module):
                 obj_vecs = torch.cat([obj_vecs, boxes_prior], dim=1)
             obj_vecs = self.layer_norm(obj_vecs)
 
+        # (num_pred, 10)
         pred_tokens = self.tokenizer(
             p_names, max_length=10, padding="max_length", truncation=True, return_tensors="pt"
         ).input_ids.to('cuda:0')
 
         pred_vecs = self.text_encoder(pred_tokens)[0]
-        # merge last two dimensions with view
-        pred_vecs = pred_vecs.view(pred_vecs.size(0), -1)
+        # average over the number of token (num_pred, 10, 1024) -> (num_pred, 1024)
+        pred_vecs = pred_vecs.mean(axis=-2)
+
+        # pred_vecs = pred_vecs.view(pred_vecs.size(0), -1)
         # pred_vecs = self.pred_embeddings(p)
+        print(f'obj shape: {obj_vecs.shape}')
+        print(f'pred shape: {pred_vecs.shape}')
 
         # GCN pass
         if isinstance(self.gconv, nn.Linear):
