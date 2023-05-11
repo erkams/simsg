@@ -47,7 +47,7 @@ from scripts.train_utils import *
 torch.backends.cudnn.benchmark = True
 
 # for clevr, change to './datasets/clevr/target'
-DATA_DIR = os.path.expanduser('/content/drive/MyDrive/MyClevr/target')
+DATA_DIR = os.path.expanduser('/mnt/nfs-students/MyClevr/target')
 
 
 def argument_parser():
@@ -636,7 +636,7 @@ def main(args):
 if __name__ == '__main__':
   parser = argument_parser()
   args = parser.parse_args()
-  
+
   args.vg_image_dir = os.path.join(args.data_dir, 'images')
   args.train_h5 = os.path.join(args.data_dir, 'train.h5')
   args.val_h5 = os.path.join(args.data_dir, 'val.h5')
