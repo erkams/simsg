@@ -36,7 +36,7 @@ feats_in_gcn: False
 feats_out_gcn: True
 is_baseline: False
 is_supervised: True
-num_iterations: 50000
+num_iterations: 20000
 
 # LOGGING OPTIONS
 print_every: 100
