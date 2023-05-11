@@ -71,6 +71,7 @@ def argument_parser():
   parser.add_argument('--loader_num_workers', default=4, type=int)
   parser.add_argument('--include_relationships', default=True, type=bool_flag)
 
+  parser.add_argument('--data_dir', default=DATA_DIR)
   parser.add_argument('--vg_image_dir', default=os.path.join(DATA_DIR, 'images'))
   parser.add_argument('--train_h5', default=os.path.join(DATA_DIR, 'train.h5'))
   parser.add_argument('--val_h5', default=os.path.join(DATA_DIR, 'val.h5'))
@@ -635,4 +636,11 @@ def main(args):
 if __name__ == '__main__':
   parser = argument_parser()
   args = parser.parse_args()
+  
+  args.vg_image_dir = os.path.join(args.data_dir, 'images')
+  args.train_h5 = os.path.join(args.data_dir, 'train.h5')
+  args.val_h5 = os.path.join(args.data_dir, 'val.h5')
+  args.test_h5 = os.path.join(args.data_dir, 'test.h5')
+  args.vocab_json = os.path.join(args.data_dir, 'vocab.json')
+
   main(args)
