@@ -39,6 +39,6 @@ is_supervised: True
 num_iterations: 50000
 
 # LOGGING OPTIONS
-print_every: 500
-checkpoint_every: 2000
+print_every: 100
+checkpoint_every: 500
 max_num_imgs: 32
