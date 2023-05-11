@@ -4,15 +4,15 @@ gpu: 0
 
 # DATA OPTIONS
 dataset: clevr
-vg_image_dir: /content/drive/MyDrive/MyClevr/target
-output_dir: /content/drive/MyDrive/experiments/clevr_clip
+vg_image_dir: /mnt/nfs-students/MyClevr/target
+output_dir: /mnt/nfs-students/experiments/clevr_clip
 checkpoint_name: spade_64_clevr_clip
-log_dir: /content/drive/MyDrive/experiments/clevr/logs/spade_64_clevr_clip
+log_dir: /mnt/nfs-students/experiments/clevr/logs/spade_64_clevr_clip
 
 # ARCHITECTURE OPTIONS
 image_size: !!python/tuple [64, 64]
 crop_size: 32
-batch_size: 16
+batch_size: 32
 mask_size: 16
 d_obj_arch: C4-64-2,C4-128-2,C4-256-2
 d_img_arch: C4-64-2,C4-128-2,C4-256-2
