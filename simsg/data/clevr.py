@@ -115,8 +115,8 @@ class SceneGraphWithPairsDataset(Dataset):
     - triples: LongTensor of shape (num_triples, 3) where triples[t] = [i, p, j]
       means that (objs[i], p, objs[j]) is a triple.
     """
-    img_path = os.path.join(self.image_dir, self.image_paths[index])
-    img_source_path = os.path.join(self.image_source_dir, self.image_paths[index])
+    img_path = os.path.join(self.image_dir, self.image_paths[index].decode())
+    img_source_path = os.path.join(self.image_source_dir, self.image_paths[index].decode())
 
     src_to_target_obj = conv_src_to_target(self.vocab_src, self.vocab_t)
 
