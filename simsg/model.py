@@ -233,12 +233,12 @@ class SIMSGModel(nn.Module):
 
         # convert objects to torch tensor
         objs = torch.tensor(objects, dtype=torch.long, device=triples.device)
-        print(f'objs shape: {objs.shape}')
-        print(f'pred shape: {p.shape}')
+        # print(f'objs shape: {objs.shape}')
+        # print(f'pred shape: {p.shape}')
         obj_names = [self.vocab['object_idx_to_name'][i] for i in objs.cpu().numpy()]
         p_names = [self.vocab['pred_idx_to_name'][i] for i in p.cpu().numpy()]
-        print(f'obj names: {len(obj_names)}')
-        print(f'p_names shape: {len(p_names)}')
+        # print(f'obj names: {len(obj_names)}')
+        # print(f'p_names shape: {len(p_names)}')
         
         # s_names = [self.vocab['object_idx_to_name'][i] for i in s.cpu().numpy()]
         # o_names = [self.vocab['object_idx_to_name'][i] for i in o.cpu().numpy()]
@@ -292,8 +292,8 @@ class SIMSGModel(nn.Module):
             obj_vecs = self.layer_norm(obj_vecs)
 
         pred_vecs = embed_text(p_names)
-        print(obj_vecs.shape)
-        print(pred_vecs.shape)
+        # print(obj_vecs.shape)
+        # print(pred_vecs.shape)
         
         # GCN pass
         if isinstance(self.gconv, nn.Linear):
