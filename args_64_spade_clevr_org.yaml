@@ -4,10 +4,10 @@ gpu: 0
 
 # DATA OPTIONS
 dataset: clevr
-vg_image_dir: ./datasets/clevr/target
-output_dir: experiments/clevr
-checkpoint_name: spade_64_clevr
-log_dir: experiments/clevr/logs/spade_64_clevr
+vg_image_dir: /mnt/nfs-students/MyClevr/target
+output_dir: /mnt/nfs-students/experiments/clevr_org
+checkpoint_name: spade_64_clevr_org
+log_dir: /mnt/nfs-students/experiments/clevr/logs/spade_64_clevr_org
 
 # ARCHITECTURE OPTIONS
 image_size: !!python/tuple [64, 64]
@@ -36,9 +36,9 @@ feats_in_gcn: False
 feats_out_gcn: True
 is_baseline: False
 is_supervised: True
-num_iterations: 50000
+num_iterations: 20000
 
 # LOGGING OPTIONS
-print_every: 500
-checkpoint_every: 2000
+print_every: 100
+checkpoint_every: 500
 max_num_imgs: 32
