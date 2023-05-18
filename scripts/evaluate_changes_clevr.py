@@ -34,7 +34,7 @@ from simsg.utils import int_tuple, bool_flag
 import pytorch_ssim
 from simsg.metrics import jaccard
 #perceptual error
-from PerceptualSimilarity import models
+# from PerceptualSimilarity import models
 
 import cv2
 import numpy as np
