@@ -259,7 +259,7 @@ def run_model(args, checkpoint, loader=None):
   margin = 2
 
   ## Initializing the perceptual loss model
-  lpips_model = models.PerceptualLoss(model='net-lin', net='alex', use_gpu=True)
+  # lpips_model = models.PerceptualLoss(model='net-lin', net='alex', use_gpu=True)
   perceptual_error_image_all = []
   perceptual_error_image = get_def_dict()
   perceptual_error_roi_all = []
@@ -434,9 +434,9 @@ def run_model(args, checkpoint, loader=None):
       imgs_pred_norm = imgs_pred[s:s + 1, :, :, :] / 127.5 - 1
       imgs_gt_norm = imgs[s:s + 1, :, :, :] / 127.5 - 1
 
-      curr_lpips = lpips_model.forward(imgs_pred_norm, imgs_gt_norm).detach().cpu().numpy()
-      perceptual_error_image_all.append(curr_lpips)
-      perceptual_error_image[mode].append(curr_lpips)
+      # curr_lpips = lpips_model.forward(imgs_pred_norm, imgs_gt_norm).detach().cpu().numpy()
+      # perceptual_error_image_all.append(curr_lpips)
+      # perceptual_error_image[mode].append(curr_lpips)
 
     for i in range(imgs_pred.size(0)):
 
