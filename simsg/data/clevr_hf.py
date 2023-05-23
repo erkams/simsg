@@ -258,18 +258,29 @@ class HFDataset(Dataset):
     _boxes = torch.tensor([[b[0]*img.shape[2],b[1]*img.shape[1],b[2]*img.shape[2], b[3]*img.shape[1]] for b in boxes[:-1]])
 
     x = draw_bounding_boxes(img, _boxes, colors='white', width=2)
-
+    # each box filled with the color of the corresponding object
+    colors = [self.vocab_src['object_idx_to_name'][obj].split(' ')[0] for obj in objs[:-1]]
+    y = draw_bounding_boxes(x, _boxes, colors=colors, fill=True, width=2)
     layout = T.ToPILImage(mode="RGB")(x)
+    colored_layout = T.ToPILImage(mode="RGB")(y)
 
-    return {'target_img': image, # PIL image
-            'source_img': image_src, # PIL image
-            'target_layout': layout, # PIL image
-            'target_obj': objs, 
-            'source_obj': objs_src, 
-            'target_box': boxes, 
-            'source_box': boxes_src, 
-            'target_tri': triples, 
-            'source_tri': triples_src}
+    return {'image': image, # PIL image
+            'layout': layout, # PIL image
+            'colored_layout': colored_layout, # PIL image
+            'objects': objs, 
+            'boxes': boxes, 
+            'triplets': triples}
+  
+    # return {'target_img': image, # PIL image
+    #         'source_img': image_src, # PIL image
+    #         'target_layout': layout, # PIL image
+    #         'target_obj': objs, 
+    #         'source_obj': objs_src, 
+    #         'target_box': boxes, 
+    #         'source_box': boxes_src, 
+    #         'target_tri': triples, 
+    #         'source_tri': triples_src,
+    #         'prompt_objs'}
 
 
 def collate_fn_withpairs(batch):
