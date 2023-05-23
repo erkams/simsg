@@ -20,7 +20,7 @@ import torch
 from torch.utils.data import Dataset
 
 import torchvision.transforms as T
-
+from torchvision.utils import draw_bounding_boxes
 import numpy as np
 import h5py, json
 import PIL
@@ -254,14 +254,22 @@ class HFDataset(Dataset):
 
     triples_src = torch.LongTensor(triples_src)
 
-    return {'target_img':image, # PIL image
-            'source_img':image_src, # PIL image
-            'target_obj':objs, 
-            'source_obj':objs_src, 
-            'target_box':boxes, 
-            'source_box':boxes_src, 
-            'target_tri':triples, 
-            'source_tri':triples_src}
+    img = torch.zeros((3, HH, WW), dtype=torch.uint8)
+    _boxes = torch.tensor([[b[0]*img.shape[2],b[1]*img.shape[1],b[2]*img.shape[2], b[3]*img.shape[1]] for b in boxes[:-1]])
+
+    x = draw_bounding_boxes(img, _boxes, colors='white', width=2)
+
+    layout = T.ToPILImage(mode="RGB")(x)
+
+    return {'target_img': image, # PIL image
+            'source_img': image_src, # PIL image
+            'target_layout': layout, # PIL image
+            'target_obj': objs, 
+            'source_obj': objs_src, 
+            'target_box': boxes, 
+            'source_box': boxes_src, 
+            'target_tri': triples, 
+            'source_tri': triples_src}
 
 
 def collate_fn_withpairs(batch):
