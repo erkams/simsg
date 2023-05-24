@@ -260,13 +260,17 @@ class HFDataset(Dataset):
     x = draw_bounding_boxes(img, _boxes, colors='white', width=2)
     # each box filled with the color of the corresponding object
     colors = [self.vocab_src['object_idx_to_name'][obj].split(' ')[0] for obj in objs[:-1]]
+    labels = [self.vocab_src['object_idx_to_name'][obj] for obj in objs[:-1]]
     y = draw_bounding_boxes(x, _boxes, colors=colors, fill=True, width=2)
+    z = draw_bounding_boxes(x, _boxes, colors=colors, labels=labels, fill=True, width=2)
     layout = T.ToPILImage(mode="RGB")(x)
     colored_layout = T.ToPILImage(mode="RGB")(y)
-
+    labeled_layout = T.ToPILImage(mode="RGB")(z)
+    
     return {'image': image, # PIL image
             'layout': layout, # PIL image
             'colored_layout': colored_layout, # PIL image
+            'labeled_layout': labeled_layout, # PIL image
             'objects': objs, 
             'boxes': boxes, 
             'triplets': triples}
