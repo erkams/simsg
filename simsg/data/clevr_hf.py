@@ -266,7 +266,7 @@ class HFDataset(Dataset):
     layout = T.ToPILImage(mode="RGB")(x)
     colored_layout = T.ToPILImage(mode="RGB")(y)
     # labeled_layout = T.ToPILImage(mode="RGB")(z)
-    objects_str = labels.join(', ')
+    objects_str = ', '.join(labels)
 
     return {'image': image, # PIL image
             'layout': layout, # PIL image
