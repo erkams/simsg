@@ -267,7 +267,44 @@ def render_scene(args,
 
   # Load materials
   utils.load_materials(args.material_dir)
+  
+  def add_depth_node(path):
+    # Set up rendering of depth map:
+    bpy.context.scene.use_nodes = True
+    tree = bpy.context.scene.node_tree
+    links = tree.links
 
+    # clear default nodes
+    for n in tree.nodes:
+        tree.nodes.remove(n)
+
+    # create input render layer node
+    rl = tree.nodes.new('CompositorNodeRLayers')
+
+    map = tree.nodes.new(type="CompositorNodeMapValue")
+    # Size is chosen kind of arbitrarily, try out until you're satisfied with resulting depth map.
+    map.size = [0.08]
+    map.use_min = True
+    map.min = [0]
+    map.use_max = True
+    map.max = [255]
+    links.new(rl.outputs[2], map.inputs[0])
+
+    invert = tree.nodes.new(type="CompositorNodeInvert")
+    links.new(map.outputs[0], invert.inputs[1])
+
+    # The viewer can come in handy for inspecting the results in the GUI
+    depthViewer = tree.nodes.new(type="CompositorNodeViewer")
+    links.new(invert.outputs[0], depthViewer.inputs[0])
+    # Use alpha from input.
+    links.new(rl.outputs[1], depthViewer.inputs[1])
+
+    fileOutput = tree.nodes.new(type="CompositorNodeOutputFile")
+    fileOutput.base_path = path
+    links.new(invert.outputs[0], fileOutput.inputs[0])
+
+    return tree
+  
   # Set render arguments so we can get pixel coordinates later.
   # We use functionality specific to the CYCLES renderer so BLENDER_RENDER
   # cannot be used.
@@ -358,9 +395,15 @@ def render_scene(args,
   # Render the scene and dump the scene data structure
   scene_struct['objects'] = objects
   scene_struct['relationships'] = compute_all_relationships(scene_struct)
+  
+  tree = add_depth_node(output_depth)
+
   while True:
     try:
       bpy.ops.render.render(write_still=True)
+      bpy.context.scene.use_nodes = False
+      for n in tree.nodes:
+        tree.nodes.remove(n)
       break
     except Exception as e:
       print(e)
@@ -393,10 +436,15 @@ def render_scene(args,
   scene_struct['relationships'] = compute_all_relationships(scene_struct)
   
   render_args.filepath = output_image_target
+  tree = add_depth_node(output_depth_target)
+
   #Render and save scene again
   while True:
     try:
       bpy.ops.render.render(write_still=True)
+      bpy.context.scene.use_nodes = False
+      for n in tree.nodes:
+        tree.nodes.remove(n)
       break
     except Exception as e:
       print(e)
