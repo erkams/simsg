@@ -139,7 +139,7 @@ parser.add_argument('--mode', default='rel_change', choices=['rel_change','remov
     help="Image manipulation mode")
 
 # Rendering options
-parser.add_argument('--use_gpu', default=0, type=int,
+parser.add_argument('--use_gpu', default=1, type=int,
     help="Setting --use_gpu 1 enables GPU-accelerated rendering using CUDA. " +
          "You must have an NVIDIA GPU with the CUDA toolkit installed for " +
          "to work.")
