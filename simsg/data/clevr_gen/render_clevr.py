@@ -172,18 +172,22 @@ def main(args):
   num_digits = 6
   prefix = '%s_%s_' % (args.filename_prefix, args.split)
   img_template_source = '%s%%0%dd_source.png' % (prefix, num_digits)
+  depth_template_source = '%s%%0%dd_source_depth.png' % (prefix, num_digits)
   scene_template_source = '%s%%0%dd_source.json' % (prefix, num_digits)
   blend_template_source = '%s%%0%dd_source.blend' % (prefix, num_digits)
 
   img_template_source = os.path.join(args.output_image_dir, img_template_source)
+  depth_template_source = os.path.join(args.output_image_dir, depth_template_source)
   scene_template_source = os.path.join(args.output_scene_dir, scene_template_source)
   blend_template_source = os.path.join(args.output_blend_dir, blend_template_source)
 
   img_template_target = '%s%%0%dd_target.png' % (prefix, num_digits)
+  depth_template_target = '%s%%0%dd_target_depth.png' % (prefix, num_digits)
   scene_template_target = '%s%%0%dd_target.json' % (prefix, num_digits)
   blend_template_target = '%s%%0%dd_target.blend' % (prefix, num_digits)
 
   img_template_target = os.path.join(args.output_image_dir, img_template_target)
+  depth_template_target = os.path.join(args.output_image_dir, depth_template_target)
   scene_template_target = os.path.join(args.output_scene_dir, scene_template_target)
   blend_template_target = os.path.join(args.output_blend_dir, blend_template_target)
 
@@ -202,6 +206,9 @@ def main(args):
     scene_path_source = scene_template_source % (i + args.start_idx)
     scene_path_target = scene_template_target % (i + args.start_idx)
 
+    depth_path_source = depth_template_source % (i + args.start_idx)
+    depth_path_target = depth_template_target % (i + args.start_idx)
+
     all_scene_paths.append(scene_path_source)
     all_scene_paths.append(scene_path_target)
     blend_path_source = None
@@ -215,6 +222,8 @@ def main(args):
       output_split=args.split,
       output_image=img_path_source,
       output_image_target=img_path_target,
+      output_depth=depth_path_source,
+      output_depth_target=depth_path_target,
       output_scene_source=scene_path_source,
       output_scene_target=scene_path_target,
       output_blendfile=blend_path_source,
@@ -246,6 +255,8 @@ def render_scene(args,
     output_split='none',
     output_image='render_source.png',
     output_image_target='render_target.png',
+    output_depth='render_source_depth.png',
+    output_depth_target='render_target_depth.png',
     output_scene_source='render_source_json',
     output_scene_target='render_target_json',
     output_blendfile=None,
