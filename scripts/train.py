@@ -98,6 +98,7 @@ def argument_parser():
   parser.add_argument('--feats_out_gcn', default=True, type=bool_flag)
   parser.add_argument('--is_baseline', default=False, type=int)
   parser.add_argument('--is_supervised', default=False, type=int)
+  parser.add_argument('--switch_to_box_pred', default=0, type=int)
 
   # Generator losses
   parser.add_argument('--l1_pixel_loss_weight', default=1.0, type=float)
@@ -405,9 +406,13 @@ def main(args):
       with timeit('forward', args.timing):
         model_boxes = boxes
         model_masks = masks
-
-        model_out = model(objs, triples, obj_to_img,
-                          boxes_gt=model_boxes, masks_gt=model_masks, src_image=imgs_in, imgs_src=imgs_src, t=t)
+        if args.switch_to_box_pred>0 and t>args.switch_to_box_pred:
+          model_out = model(objs, triples, obj_to_img,
+                            boxes_gt=None, masks_gt=model_masks, src_image=imgs_in, imgs_src=imgs_src, t=t)
+        else:
+          model_out = model(objs, triples, obj_to_img,
+                            boxes_gt=model_boxes, masks_gt=model_masks, src_image=imgs_in, imgs_src=imgs_src, t=t)
+          
         imgs_pred, boxes_pred, masks_pred, layout_mask, _ = model_out
 
       with timeit('loss', args.timing):
