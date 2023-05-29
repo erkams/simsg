@@ -407,6 +407,8 @@ def main(args):
         model_boxes = boxes
         model_masks = masks
         if args.switch_to_box_pred>0 and t>args.switch_to_box_pred:
+          if t == args.switch_to_box_pred+1:
+            print('switching to box pred')
           model_out = model(objs, triples, obj_to_img,
                             boxes_gt=None, masks_gt=model_masks, src_image=imgs_in, imgs_src=imgs_src, t=t)
         else:
