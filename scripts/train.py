@@ -47,7 +47,7 @@ from scripts.train_utils import *
 torch.backends.cudnn.benchmark = True
 
 # for clevr, change to './datasets/clevr/target'
-DATA_DIR = os.path.expanduser('/mnt/nfs-students/MyClevr/target')
+DATA_DIR = os.path.expanduser('/mnt/students/MyClevr/target')
 
 
 def argument_parser():

@@ -4,10 +4,10 @@ gpu: 0
 
 # DATA OPTIONS
 dataset: clevr
-vg_image_dir: /mnt/nfs-students/MyClevr/target
-output_dir: /mnt/nfs-students/experiments/clevr_clip_switch
+vg_image_dir: /mnt/students/MyClevr/target
+output_dir: /mnt/students/experiments/clevr_clip_switch
 checkpoint_name: spade_64_clevr_clip_switch
-log_dir: /mnt/nfs-students/experiments/clevr/logs/spade_64_clevr_clip_switch
+log_dir: /mnt/students/experiments/clevr/logs/spade_64_clevr_clip_switch
 
 # ARCHITECTURE OPTIONS
 image_size: !!python/tuple [64, 64]

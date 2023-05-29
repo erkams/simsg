@@ -42,7 +42,7 @@ import numpy as np
 from simsg.loader_utils import build_eval_loader
 from scripts.eval_utils import bbox_coordinates_with_margin, makedir, query_image_by_semantic_id, save_graph_json
 
-CLEVR_DIR = os.path.expanduser('/mnt/nfs-students/MyClevr/target')
+CLEVR_DIR = os.path.expanduser('/mnt/students/MyClevr/target')
 SPLIT = "test"
 
 print_every = 100
