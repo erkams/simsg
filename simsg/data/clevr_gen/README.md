@@ -1,6 +1,13 @@
 ## Setup
 You will need to download and install [Blender](https://www.blender.org/); code has been developed and tested using Blender version 2.78c but other versions may work as well.
 
+### Docker
+Or you can use blender docker image below.
+
+```bash
+docker pull vogete/blender-cuda:blender2.79b-cuda10.0-ubuntu18.04
+```
+
 ## Data Generation
 Run 1_gen_data.sh to generate source/target pairs for each of the available modes. The first argument is the change mode, the second argument is the path to blender directory and the third argument is the option to merge all of the modes into one folder. The manipulation modes are: removal, replacement, addition, rel_change
 Sample command:
