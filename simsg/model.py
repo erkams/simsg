@@ -318,7 +318,7 @@ class SIMSGModel(nn.Module):
 
     def forward(self, objs, triples, obj_to_img=None, boxes_gt=None, masks_gt=None, src_image=None, imgs_src=None,
                 keep_box_idx=None, keep_feat_idx=None, keep_image_idx=None, combine_gt_pred_box_idx=None,
-                query_feats=None, mode='train', t=0, query_idx=0, random_feats=False, get_layout_boxes=False, get_conv_feats=False):
+                query_feats=None, mode='train', t=0, query_idx=0, random_feats=False, get_layout_boxes=False, get_conv_feats=False, return_layout=False, switch_to_box_pred=False):
         """
         Required Inputs:
         - objs: LongTensor of shape (num_objs,) giving categories for all objects
@@ -447,13 +447,13 @@ class SIMSGModel(nn.Module):
             obj_vecs = torch.cat([obj_vecs, feats_prior], 1)
             obj_vecs = self.layer_norm2(obj_vecs)
 
-        use_predboxes = False
+        use_predboxes = switch_to_box_pred
 
         H, W = self.image_size
 
         if self.is_baseline or self.is_supervised:
 
-            layout_boxes = boxes_pred if boxes_gt is None else boxes_gt
+            layout_boxes = boxes_pred if (boxes_gt is None or use_predboxes is True) else boxes_gt
             box_ones = torch.ones([num_objs, 1], dtype=boxes_gt.dtype, device=boxes_gt.device)
 
             box_keep = self.prepare_keep_idx(evaluating, box_ones, in_image.size(0), obj_to_img, keep_box_idx,
@@ -465,7 +465,8 @@ class SIMSGModel(nn.Module):
 
             for box_id in range(keep_image_idx.size(0)):
                 if keep_image_idx[box_id] == 0:
-                    in_image = mask_image_in_bbox(in_image, boxes_gt, box_id, obj_to_img)
+                    boxes = boxes_pred if (boxes_gt is None or use_predboxes is True) else boxes_gt
+                    in_image = mask_image_in_bbox(in_image, boxes, box_id, obj_to_img)
             generated = None
 
         else:
@@ -506,7 +507,10 @@ class SIMSGModel(nn.Module):
             layout_masks = masks_pred if masks_gt is None else masks_gt
             layout = masks_to_layout(obj_vecs, layout_boxes, layout_masks,
                                      obj_to_img, H, W, pooling=self.layout_pooling)#, front_idx=1-keep_box_idx)
-
+        
+        if return_layout:
+            return layout
+        
         noise_occluding = True
 
         if self.image_feats_branch:

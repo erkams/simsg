@@ -410,7 +410,7 @@ def main(args):
           if t == args.switch_to_box_pred+1:
             print('switching to box pred')
           model_out = model(objs, triples, obj_to_img,
-                            boxes_gt=None, masks_gt=model_masks, src_image=imgs_in, imgs_src=imgs_src, t=t)
+                            boxes_gt=model_boxes, masks_gt=model_masks, src_image=imgs_in, imgs_src=imgs_src, t=t, switch_to_box_pred=True)
         else:
           model_out = model(objs, triples, obj_to_img,
                             boxes_gt=model_boxes, masks_gt=model_masks, src_image=imgs_in, imgs_src=imgs_src, t=t)
