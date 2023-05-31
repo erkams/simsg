@@ -14,15 +14,25 @@
 
 num=0;
 res_dir='./MyClevr';
+
+mkdir -p $res_dir"/target/images";
+mkdir -p $res_dir"/target/scenes";
+mkdir -p $res_dir"/source/images";
+mkdir -p $res_dir"/source/scenes";
+
 for j in */; do 
 find $(pwd)/$j"images" -iname "*_target.png" | sort -u | while read p; do
   cp $p $res_dir"/target/images/$num.png";
+  cp ${p/target/"source"} $res_dir"/source/images/$num.png";
   q=$(pwd)/$j"scenes/${p##*/}"
   q="${q%%.*}.json"
   cp $q $res_dir"/target/scenes/$num.json";
-  ((num++));
+  cp ${q/target/"source"} $res_dir"/source/scenes/$num.json";
+  num=$((num+1))
   echo $p;
+  echo ${p/target/"source"};
   echo $q;
+  echo ${q/target/"source"};
   echo $num;
 done
 num=`expr $(ls -1 "$res_dir/target/images/" | wc -l)`;
