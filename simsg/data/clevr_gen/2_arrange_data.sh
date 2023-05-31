@@ -37,3 +37,24 @@ find $(pwd)/$j"images" -iname "*_target.png" | sort -u | while read p; do
 done
 num=`expr $(ls -1 "$res_dir/target/images/" | wc -l)`;
 done
+
+# if there is depth maps folder arrange them as well.
+
+mkdir -p $res_dir"/target/depth";
+mkdir -p $res_dir"/source/depth";
+
+for j in */; do 
+find $(pwd)/$j"images" -iname "*_target_depth.png" | sort -u | while read p; do
+  cp $p $res_dir"/target/depth/$num.png";
+  cp ${p/target/"source"} $res_dir"/source/depth/$num.png";
+  # q=$(pwd)/$j"scenes/${p##*/}"
+  num=$((num+1))
+  echo $p;
+  echo ${p/target/"source"};
+  echo $num;
+done
+num=`expr $(ls -1 "$res_dir/target/depth/" | wc -l)`;
+done
+
+rmdir $res_dir"/target/depth" 2> /dev/null
+rmdir $res_dir"/source/depth" 2> /dev/null
