@@ -300,7 +300,10 @@ def render_scene(args,
     links.new(rl.outputs[1], depthViewer.inputs[1])
 
     fileOutput = tree.nodes.new(type="CompositorNodeOutputFile")
+    path, filename = os.path.split(path)
+    filename, _ = os.path.splitext(filename)
     fileOutput.base_path = path
+    fileOutput.file_slots[0].path = filename
     links.new(invert.outputs[0], fileOutput.inputs[0])
 
     return tree
