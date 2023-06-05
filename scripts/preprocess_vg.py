@@ -28,12 +28,12 @@ fully-connected.
 """
 
 
-VG_DIR = 'datasets/vg'
+VG_DIR = 'simsg/data/clevr_gen/MyClevr/source'
 
 parser = argparse.ArgumentParser()
 
 # Input data
-parser.add_argument('--splits_json', default='simsg/data/vg_splits.json')
+parser.add_argument('--splits_json', default='simsg/data/clevr_gen/MyClevr/source/vg_splits.json')
 parser.add_argument('--images_json',
     default=os.path.join(VG_DIR, 'image_data.json'))
 parser.add_argument('--objects_json',
