@@ -133,6 +133,16 @@ def main(args):
                                          dtype=path_dtype)
       for i, p in enumerate(image_paths):
         path_dset[i] = p
+
+      print('Writing depth paths')
+      depth_paths = get_depth_paths(image_id_to_image, image_ids)
+      d_path_dtype = h5py.special_dtype(vlen=str)
+      d_path_shape = (len(depth_paths),)
+      d_path_dset = h5_file.create_dataset('depth_paths', d_path_shape,
+                                         dtype=d_path_dtype)
+      for i, p in enumerate(depth_paths):
+        d_path_dset[i] = p
+
     print()
 
   print('Writing vocab to "%s"' % args.output_vocab_json)
@@ -167,6 +177,14 @@ def get_image_paths(image_id_to_image, image_ids):
     paths.append(path)
   return paths
 
+def get_depth_paths(image_id_to_image, image_ids):
+  paths = []
+  for image_id in image_ids:
+    image = image_id_to_image[image_id]
+    base, filename = os.path.split(image['depth_url'])
+    path = os.path.join(os.path.basename(base), filename)
+    paths.append(path)
+  return paths
 
 def handle_images(args, image_ids, h5_file):
   with open(args.images_json, 'r') as f:

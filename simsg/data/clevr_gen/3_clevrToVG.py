@@ -50,12 +50,13 @@ np.random.seed(seed=0)
 parser = argparse.ArgumentParser()
 
 # Input data
-parser.add_argument('--data_path', default='/media/azadef/MyHDD/Data/MyClevr_postcvpr/source')
+parser.add_argument('--data_path', default='./MyClevr/source')
 
 args = parser.parse_args()
 
 data_path = args.data_path
 im_names = sorted(os.listdir(os.path.join(data_path,'images')))
+depth_names = sorted(os.listdir(os.path.join(data_path,'depth')))
 json_names = sorted(os.listdir(os.path.join(data_path,'scenes')))
 
 labels_file_path = os.path.join(data_path, 'image_data.json')
@@ -163,11 +164,13 @@ with open(labels_file_path, 'w') as labels_file:
             new_rel['relationships'] = rels
             new_scene['relationships'] = rels
             im_path = os.path.join(data_path,'images',json_file.strip('.json') + '.png')
-
+            depth_path = os.path.join(data_path,'depth',json_file.strip('.json') + '.png')
 
             new_obj['url'] = im_path
+            new_obj['depth_url'] = depth_path
 
             new_scene['url'] = im_path
+            new_scene['depth_url'] = depth_path
             new_scene['width'] = 320
             new_scene['height'] = 240
             im_id += 1
