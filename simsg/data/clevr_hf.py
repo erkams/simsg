@@ -88,6 +88,8 @@ class HFDataset(Dataset):
       for k, v in f.items():
         if k == 'image_paths':
           self.image_paths = list(v)
+        elif k == 'depth_paths':
+          self.depth_paths = list(v)
         else:
           self.data[k] = torch.IntTensor(np.asarray(v))
 
@@ -96,6 +98,8 @@ class HFDataset(Dataset):
       for k, v in f.items():
         if k == 'image_paths':
           self.image_paths_src = list(v)
+        elif k == 'depth_paths':
+          self.depth_paths_src = list(v)
         else:
           self.data_src[k] = torch.IntTensor(np.asarray(v))
 
@@ -116,7 +120,9 @@ class HFDataset(Dataset):
       means that (objs[i], p, objs[j]) is a triple.
     """
     img_path = os.path.join(self.image_dir, self.image_paths[index].decode())
+    depth_path = os.path.join(self.image_dir, self.depth_paths[index].decode())
     img_source_path = os.path.join(self.image_source_dir, self.image_paths[index].decode())
+    depth_source_path = os.path.join(self.image_source_dir, self.depth_paths[index].decode())
 
     src_to_target_obj = conv_src_to_target(self.vocab_src, self.vocab_t)
 
@@ -127,8 +133,18 @@ class HFDataset(Dataset):
 
     with open(img_source_path, 'rb') as f:
       with PIL.Image.open(f) as image_src:
-        #WW, HH = image.size
+        #WW, HH = image_src.size
         image_src = image_src.convert('RGB')
+
+    with open(depth_path, 'rb') as f:
+      with PIL.Image.open(f) as depth:
+        # WW, HH = depth.size
+        depth = depth.convert('RGB')
+
+    with open(depth_source_path, 'rb') as f:
+      with PIL.Image.open(f) as depth_src:
+        #WW, HH = depth_src.size
+        depth_src = depth_src.convert('RGB')
 
     H, W = self.image_size
 
@@ -269,6 +285,7 @@ class HFDataset(Dataset):
     objects_str = ', '.join(labels)
 
     return {'image': image, # PIL image
+            'depth': depth, # PIL Image
             'layout': layout, # PIL image
             'colored_layout': colored_layout, # PIL image
             # 'labeled_layout': labeled_layout, # PIL image
